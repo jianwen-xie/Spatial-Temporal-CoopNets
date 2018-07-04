@@ -1,1 +1,1 @@
-# Spatial-Temporal-CoopNets
+# Spatial-Temporal CoopNets
