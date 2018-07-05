@@ -6,7 +6,6 @@ import os
 import time
 from ops import *
 from util import *
-from progressbar import ETA, Bar, Percentage, ProgressBar
 
 
 class CoopNets_video(object):
@@ -119,7 +118,6 @@ class CoopNets_video(object):
                                  name="convt1")
                 convt1 = tf.contrib.layers.batch_norm(convt1, is_training=is_training)
                 convt1 = tf.nn.relu(convt1)
-                print convt1
                 # 40
                 convt2 = convt3d(convt1, (None, 32, 32, 32, 128), kernal=(5, 32, 32), strides=(2, 1, 1),
                                  padding="VALID",
@@ -127,7 +125,6 @@ class CoopNets_video(object):
 
                 convt2 = tf.contrib.layers.batch_norm(convt2, is_training=is_training)
                 convt2 = tf.nn.relu(convt2)
-                print convt2
 
                 convt3 = convt3d(convt2, (None, 64, 64, 64, 3), kernal=(5, 5, 5), strides=(2, 2, 2), padding="SAME",
                                  name="convt3")
@@ -141,7 +138,6 @@ class CoopNets_video(object):
                                  name="convt1")
                 convt1 = tf.contrib.layers.batch_norm(convt1, is_training=is_training)
                 convt1 = tf.nn.relu(convt1)
-                print convt1
                 # 40
                 convt2 = convt3d(convt1, (None, 32, 32, 32, 128), kernal=(5, 32, 32), strides=(2, 1, 1),
                                  padding="VALID",
@@ -149,13 +145,11 @@ class CoopNets_video(object):
 
                 convt2 = tf.contrib.layers.batch_norm(convt2, is_training=is_training)
                 convt2 = tf.nn.relu(convt2)
-                print convt2
 
                 convt3 = convt3d(convt2, (None, 64, 64, 64, 64), kernal=(5, 5, 5), strides=(2, 2, 2), padding="SAME",
                                  name="convt3")
                 convt3 = tf.contrib.layers.batch_norm(convt3, is_training=is_training)
                 convt3 = tf.nn.relu(convt3)
-                print convt3
 
                 convt4 = convt3d(convt3, (None, 64, 128, 128, 3), kernal=(2, 5, 5), strides=(1, 2, 2), padding="SAME",
                                  name="convt4")
@@ -169,19 +163,16 @@ class CoopNets_video(object):
                                  name="convt1")
                 convt1 = tf.contrib.layers.batch_norm(convt1, is_training=is_training)
                 convt1 = tf.nn.relu(convt1)
-                print convt1
 
                 convt2 = convt3d(convt1, (None, 8, 8, 8, 256), kernal=(4, 4, 4), strides=(2, 2, 2), padding="SAME",
                                  name="convt2")
                 convt2 = tf.contrib.layers.batch_norm(convt2, is_training=is_training)
                 convt2 = tf.nn.relu(convt2)
-                print convt2
 
                 convt3 = convt3d(convt2, (None, 16, 16, 16, 128), kernal=(4, 4, 4), strides=(2, 2, 2), padding="SAME",
                                  name="convt3")
                 convt3 = tf.contrib.layers.batch_norm(convt3, is_training=is_training)
                 convt3 = tf.nn.relu(convt3)
-                print convt3
 
                 convt4 = convt3d(convt3, (None, 32, 32, 32, 64), kernal=(4, 4, 4), strides=(2, 2, 2), padding="SAME",
                                  name="convt4")
