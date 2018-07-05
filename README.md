@@ -1,6 +1,6 @@
 # Spatial-Temporal CoopNets
 
-This repository contains a tensorflow implementation for spatial-temporal CoopNets
+This repository contains a tensorflow implementation for ***spatial-temporal*** CoopNets
 
 ## Requirements
 - Python 2.7 or Python 3.3+
@@ -17,6 +17,10 @@ This repository contains a tensorflow implementation for spatial-temporal CoopNe
     git clone https://github.com/jianwen-xie/Spatial-Temporal-CoopNets
     cd Spatial-Temporal-CoopNets
     ```
+- Put training data ***fire_pot.avi*** into path:
+   ```bash
+   ./trainingVideo/fire_pot/fire_pot.avi
+   ```
 - To train a model with ***fire_pot*** video:
     ```bash
     $ python train_coop_video.py --category fire_pot --data_path ./trainingVideo --output_dir ./output_coop_video --num_epochs 1000 --num_chains 2
