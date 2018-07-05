@@ -10,13 +10,22 @@ This repository contains a tensorflow implementation for spatial-temporal CoopNe
     pip install numpy scipy
     ```
 
-## Getting Started
+## How to run
 
 - Clone this repo:
     ```bash
     git clone https://github.com/jianwen-xie/Spatial-Temporal-CoopNets
     cd Spatial-Temporal-CoopNets
     ```
+- To train a model with ***fire_pot*** video:
+    ```bash
+    $ python train_coop_video.py --category fire_pot --data_path ./trainingVideo --output_dir ./output_coop_video --num_epochs 1000 --num_chains 2
+    ```
+- Synthesized results will be saved in
+    ```bash
+    ./output_coop_video/fire_pot
+    ```
+    
 ## References
     @inproceedings{coopnets,
        author = {Xie, Jianwen and Lu, Yang and Gao, Ruiqi and Wu, Ying Nian},
