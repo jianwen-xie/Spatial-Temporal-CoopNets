@@ -37,7 +37,7 @@ This repository contains a tensorflow implementation for ***spatial-temporal*** 
     ./output_coop_video/fire_pot
     ```
 ## Results
-<p align="center"><img src="http://www.stat.ucla.edu/~jxie/3DDescriptorNet/files/3D_sr.png" width="400px"/></p>
+
 
 The first video is observed, and the rest two are synthesized by the learned model.
 
