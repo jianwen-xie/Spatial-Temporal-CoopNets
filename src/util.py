@@ -78,7 +78,6 @@ def normalize_data(images, low=-1, high=1):
     print(images.max())
     return images
 
-
 def getTrainingData(data_path, num_frames=70, image_size=100, isColor=True, postfix='.png', scale_method='original'):
     num_channel = 3
     if not isColor:
@@ -133,7 +132,7 @@ def saveSampleVideo(samples, out_dir, original=None, global_step=None, ffmpeg_lo
         subprocess.call('ffmpeg -loglevel {} -r {} -i {}/%03d.png -vcodec mpeg4 -y {}/sample.avi'.format(
             ffmpeg_loglevel,fps, result_dir,result_dir),shell=True)
 
-    result_dir = os.path.join(out_dir, 'all')
+    result_dir = os.path.join(out_dir, 'all') # visualize the original and the synthesized frames
     if global_step >= 0:
         result_dir = os.path.join(result_dir, "step_%04d" % global_step)
     if not os.path.exists(result_dir):
@@ -141,9 +140,12 @@ def saveSampleVideo(samples, out_dir, original=None, global_step=None, ffmpeg_lo
     for ifr in range(num_frames):
         if original is None:
             combined_img = samples
+            saved_img = img2cell(combined_img[:, ifr, :, :, :], col_num=num_video, margin=10, scale_method=scale_method)
         else:
+            [num_video_ori, _, _, _, _] = original.shape
             combined_img = np.concatenate((original, samples), axis=0)
-        saved_img = img2cell(combined_img[:, ifr, :, :, :], col_num=num_video, margin=10, scale_method=scale_method)
+            saved_img = img2cell(combined_img[:, ifr, :, :, :], col_num=num_video_ori, margin=10, scale_method=scale_method)
+
         scipy.misc.imsave("%s/%03d.png" % (result_dir, ifr), np.squeeze(saved_img))
     subprocess.call('ffmpeg -loglevel {} -r {} -i {}/%03d.png -vcodec mpeg4 -y {}/sample.avi'.format(
         ffmpeg_loglevel, fps, result_dir, result_dir), shell=True)
@@ -161,28 +163,3 @@ def saveSampleSequence(samples, sample_dir, iter=None, col_num=10, scale_method=
         else:
             scipy.misc.imsave("%s/sample.png" % save_dir, np.squeeze(img2cell(samples[iv], scale_method=scale_method, col_num=col_num)))
 
-
-def pepper_salt_masks(video, mask_ratio=0.8, mask_sz=7, mask_duration=3):
-    [num_videos, num_frames, img_height, img_width, num_channels] = video.shape
-    mask = np.zeros(shape=video.shape, dtype=np.float32)
-    video_sz = img_height * img_width
-    block_sz = mask_sz * mask_sz
-    num_blocks = np.ceil(video_sz * mask_ratio / block_sz).astype(np.int32)
-    blocks = np.asarray([(x*mask_sz, y*mask_sz) for x in range(img_height // mask_sz)
-                         for y in range(img_width // mask_sz)])
-    for vi in range(num_videos):
-        dur_st = np.random.randint(0, num_frames-mask_duration+1)
-        for t in range(dur_st, dur_st + mask_duration):
-            coords = blocks[np.random.choice(len(blocks), num_blocks, replace=False)]
-            for x,y in coords:
-
-                mask[vi, t, x:(x+mask_sz), y:(y+mask_sz),:] = 1
-    return mask
-
-def missing_frame_masks(video, mask_duration=3):
-    [num_videos, num_frames, img_height, img_width, num_channels] = video.shape
-    mask = np.zeros(shape=video.shape, dtype=np.float32)
-    for vi in range(num_videos):
-        dur_st = np.random.randint(0, num_frames-mask_duration)
-        mask[vi, dur_st:(dur_st+mask_duration),...] = 1
-    return mask

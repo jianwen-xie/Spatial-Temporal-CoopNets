@@ -10,7 +10,6 @@ from progressbar import ETA, Bar, Percentage, ProgressBar
 
 
 class CoopNets_video(object):
-
     def __init__(self, sess, config):
 
         self.sess = sess
@@ -60,10 +59,6 @@ class CoopNets_video(object):
         self.model_dir = os.path.join(self.output_dir, 'model')
         self.result_dir = os.path.join(self.output_dir, 'final_result')
 
-        # testing
-        # self.test_dir = os.path.join(self.output_dir, 'testing_GT_sequence')
-        # self.testing_data_path = os.path.join(config.testing_data_path, config.category)
-
         if tf.gfile.Exists(self.log_dir):
             tf.gfile.DeleteRecursively(self.log_dir)
         tf.gfile.MakeDirs(self.log_dir)
@@ -71,14 +66,18 @@ class CoopNets_video(object):
     def build_model(self):
 
         # declare placeholder
-        self.z = tf.placeholder(shape=[None, self.z_size_l, self.z_size_h, self.z_size_w, self.z_size_dim], dtype=tf.float32, name='z')
-        self.obs = tf.placeholder(shape=[None, self.num_frames, self.image_size, self.image_size, 3], dtype=tf.float32, name='obs')
-        self.syn = tf.placeholder(shape=[None, self.num_frames, self.image_size, self.image_size, 3], dtype=tf.float32, name='syn')
+        self.z = tf.placeholder(shape=[None, self.z_size_l, self.z_size_h, self.z_size_w, self.z_size_dim],
+                                dtype=tf.float32, name='z')
+        self.obs = tf.placeholder(shape=[None, self.num_frames, self.image_size, self.image_size, 3], dtype=tf.float32,
+                                  name='obs')
+        self.syn = tf.placeholder(shape=[None, self.num_frames, self.image_size, self.image_size, 3], dtype=tf.float32,
+                                  name='syn')
 
         # build generator model
         self.gen_res = self.ST_generator(self.z, reuse=False)
 
-        self.gen_loss = tf.reduce_mean(1.0 / (2 * self.refsig_gen * self.refsig_gen) * tf.square(self.obs - self.gen_res))
+        self.gen_loss = tf.reduce_mean(
+            1.0 / (2 * self.refsig_gen * self.refsig_gen) * tf.square(self.obs - self.gen_res))
         self.gen_loss_mean, self.gen_loss_update = tf.contrib.metrics.streaming_mean(self.gen_loss)
 
         # optimizing generator
@@ -121,9 +120,10 @@ class CoopNets_video(object):
                 convt1 = tf.contrib.layers.batch_norm(convt1, is_training=is_training)
                 convt1 = tf.nn.relu(convt1)
                 print convt1
-                #40
-                convt2 = convt3d(convt1, (None, 32, 32, 32, 128), kernal=(5, 32, 32), strides=(2, 1, 1), padding="VALID",
-                                name="convt2")
+                # 40
+                convt2 = convt3d(convt1, (None, 32, 32, 32, 128), kernal=(5, 32, 32), strides=(2, 1, 1),
+                                 padding="VALID",
+                                 name="convt2")
 
                 convt2 = tf.contrib.layers.batch_norm(convt2, is_training=is_training)
                 convt2 = tf.nn.relu(convt2)
@@ -142,9 +142,10 @@ class CoopNets_video(object):
                 convt1 = tf.contrib.layers.batch_norm(convt1, is_training=is_training)
                 convt1 = tf.nn.relu(convt1)
                 print convt1
-                #40
-                convt2 = convt3d(convt1, (None, 32, 32, 32, 128), kernal=(5, 32, 32), strides=(2, 1, 1), padding="VALID",
-                                name="convt2")
+                # 40
+                convt2 = convt3d(convt1, (None, 32, 32, 32, 128), kernal=(5, 32, 32), strides=(2, 1, 1),
+                                 padding="VALID",
+                                 name="convt2")
 
                 convt2 = tf.contrib.layers.batch_norm(convt2, is_training=is_training)
                 convt2 = tf.nn.relu(convt2)
@@ -165,7 +166,7 @@ class CoopNets_video(object):
             elif self.gen_type == 'ST':
 
                 convt1 = convt3d(inputs, (None, 4, 4, 4, 512), kernal=(4, 4, 4), strides=(1, 1, 1), padding="SAME",
-                                  name="convt1")
+                                 name="convt1")
                 convt1 = tf.contrib.layers.batch_norm(convt1, is_training=is_training)
                 convt1 = tf.nn.relu(convt1)
                 print convt1
@@ -194,7 +195,6 @@ class CoopNets_video(object):
             else:
                 return NotImplementedError
 
-
     def langevin_dynamics_ST_generator(self, z_arg):
         def cond(i, z):
             return tf.less(i, self.sample_steps_gen)
@@ -202,7 +202,8 @@ class CoopNets_video(object):
         def body(i, z):
             noise = tf.random_normal(shape=tf.shape(z), name='noise')
             gen_res = self.ST_generator(z, reuse=True)
-            gen_loss = tf.reduce_mean(1.0 / (2 * self.refsig_gen * self.refsig_gen) * tf.square(self.obs - gen_res), axis=0)
+            gen_loss = tf.reduce_mean(1.0 / (2 * self.refsig_gen * self.refsig_gen) * tf.square(self.obs - gen_res),
+                                      axis=0)
 
             grad = tf.gradients(gen_loss, z, name='grad_gen')[0]
 
@@ -213,7 +214,6 @@ class CoopNets_video(object):
             i = tf.constant(0)
             i, z = tf.while_loop(cond, body, [i, z_arg])
             return z
-
 
     def ST_descriptor(self, inputs, reuse=False):
 
@@ -233,7 +233,7 @@ class CoopNets_video(object):
                 conv2 = tf.nn.relu(conv2)
 
                 conv3 = conv3d(conv2, 1, (conv2.shape[1], conv2.shape[2], conv2.shape[3]), strides=(2, 2, 2),
-                                 padding=(0, 0, 0), name="conv3")
+                               padding=(0, 0, 0), name="conv3")
 
                 return conv3
 
@@ -252,7 +252,8 @@ class CoopNets_video(object):
                 conv1 = conv3d(inputs, 120, (5, 5, 5), strides=(2, 2, 2), padding="SAME", name="conv1")
                 conv1 = tf.nn.relu(conv1)
 
-                conv2 = conv3d(conv1, 30, (5, conv1.shape[2], conv1.shape[3]), strides=(2, 1, 1), padding=(2, 0, 0), name="conv2")
+                conv2 = conv3d(conv1, 30, (5, conv1.shape[2], conv1.shape[3]), strides=(2, 1, 1), padding=(2, 0, 0),
+                               name="conv2")
                 conv2 = tf.nn.relu(conv2)
 
                 conv3 = conv3d(conv2, 10, (5, 1, 1), strides=(2, 1, 1), padding=(2, 0, 0), name="conv3")
@@ -288,7 +289,8 @@ class CoopNets_video(object):
 
         # Prepare training data
         loadVideoToFrames(self.data_path, self.train_dir)
-        train_data = getTrainingData(self.train_dir, num_frames=self.num_frames, image_size=self.image_size, scale_method='tanh')
+        train_data = getTrainingData(self.train_dir, num_frames=self.num_frames, image_size=self.image_size,
+                                     scale_method='tanh')
         num_batches = int(math.ceil(train_data.shape[0] / self.batch_size))
 
         print(train_data.shape)
@@ -299,25 +301,28 @@ class CoopNets_video(object):
 
         saver = tf.train.Saver(max_to_keep=50)
 
-        gen_syn = np.zeros((self.num_chains * num_batches, train_data.shape[1], train_data.shape[2], train_data.shape[3], train_data.shape[4]))
-        des_syn = np.zeros((self.num_chains * num_batches, train_data.shape[1], train_data.shape[2], train_data.shape[3], train_data.shape[4]))
+        gen_syn = np.zeros((
+                           self.num_chains * num_batches, train_data.shape[1], train_data.shape[2], train_data.shape[3],
+                           train_data.shape[4]))
+        des_syn = np.zeros((
+                           self.num_chains * num_batches, train_data.shape[1], train_data.shape[2], train_data.shape[3],
+                           train_data.shape[4]))
 
         for epoch in xrange(self.num_epochs):
 
             for iBatch in xrange(num_batches):
-
                 indices_obs_batch = slice(iBatch * self.batch_size,
-                                      min(train_data.shape[0], (iBatch + 1) * self.batch_size))
+                                          min(train_data.shape[0], (iBatch + 1) * self.batch_size))
 
                 current_batch_size = min(train_data.shape[0], (iBatch + 1) * self.batch_size) - iBatch * self.batch_size
-
 
                 start_time = time.time()
 
                 batch_obs = train_data[indices_obs_batch, :, :, :, :]
 
                 # Step G0: generate hidden variables
-                batch_z = np.random.normal(0, 1, size=(self.num_chains, self.z_size_l, self.z_size_h, self.z_size_w, self.z_size_dim)) #* self.refsig_gen
+                batch_z = np.random.normal(0, 1, size=(
+                self.num_chains, self.z_size_l, self.z_size_h, self.z_size_w, self.z_size_dim))  # * self.refsig_gen
 
                 # generate data
                 recon = self.sess.run(self.gen_res, feed_dict={self.z: batch_z})
@@ -325,28 +330,15 @@ class CoopNets_video(object):
                 # Step D1: obtain synthesized data Y
                 syn = self.sess.run(self.langevin_ST_descriptor, feed_dict={self.syn: recon})
 
-                # Step G1: Update hidden variables using synthesized data as training data (inference by Langevin)
-
-                # batch_z, batch_content_vectors, batch_motion_type_vectors = self.sess.run(self.langevin_conditional_dyn_generator,
-                #                         feed_dict={self.truncated_batch_z_placeholder: batch_z,
-                #                                    self.batch_first_frame_placeholder: batch_first_frame,
-                #                                    self.truncated_batch_obs_placeholder: syn,
-                #                                    self.batch_content_placeholder: batch_content_vectors,
-                #                                    self.batch_motion_type_placeholder: batch_motion_type_vectors})
+                # Step G1 (optional): Update hidden variables using synthesized data as training data (inference by Langevin)
 
                 # Step D2: update descriptor
                 self.sess.run([self.des_loss, self.des_loss_update, self.apply_des_grads],
                               feed_dict={self.syn: syn, self.obs: batch_obs})
 
-                # # store the last state of the batch as the first stage of next truncation
-                # batch_last_state = self.sess.run(self.next_state,
-                #                                  feed_dict={self.truncated_batch_z_placeholder: batch_z,
-                #                                             self.batch_state_initial_placeholder: batch_state_initial})
-
                 # Step G2: update dyn generator
                 self.sess.run([self.gen_loss, self.gen_loss_update, self.apply_gen_grads],
                               feed_dict={self.z: batch_z, self.obs: syn})
-
 
                 # z[indices_batch, indices_truncation, :] = batch_z
 
@@ -358,16 +350,14 @@ class CoopNets_video(object):
 
                 end_time = time.time()
                 print(
-                'Epoch #%d of #%d, batch #%d of #%d, generator loss: %4.4f, descriptor loss: %4.4f, time: %.2fs' % (
-                    epoch + 1, self.num_epochs, iBatch + 1, num_batches, gen_loss_avg, des_loss_avg, end_time - start_time))
-
+                    'Epoch #%d of #%d, batch #%d of #%d, generator loss: %4.4f, descriptor loss: %4.4f, time: %.2fs' % (
+                        epoch + 1, self.num_epochs, iBatch + 1, num_batches, gen_loss_avg, des_loss_avg,
+                        end_time - start_time))
 
             if epoch % self.log_step == 0:
                 if not os.path.exists(self.sample_gen_dir):
                     os.makedirs(self.sample_gen_dir)
-
-                #saveSampleSequence(gen_syn + data_mean, self.sample_gen_dir, epoch, col_num=10,
-                #                   scale_method='original')
+ 
                 saveSampleSequence(gen_syn, self.sample_gen_dir, epoch, col_num=10,
                                    scale_method='tanh')
 
@@ -376,65 +366,13 @@ class CoopNets_video(object):
 
                 saveSampleSequence(des_syn, self.sample_des_dir, epoch, col_num=10,
                                    scale_method='tanh')
+                
                 if not os.path.exists(self.model_dir):
                     os.makedirs(self.model_dir)
                 saver.save(self.sess, "%s/%s" % (self.model_dir, 'model.ckpt'), global_step=epoch)
 
             if epoch % 20 == 0:
-
                 saveSampleVideo(des_syn, self.result_dir, original=(train_data),
                                 global_step=epoch,
                                 scale_method='tanh')
 
-    def test(self, ckpt):
-
-        assert ckpt is not None, 'no checkpoint provided.'
-
-        sample_dir_testing = os.path.join(self.output_dir, 'synthesis_sequence_testing')
-        result_dir_testing = os.path.join(self.output_dir, 'final_result_testing')
-
-        # self.num_batches_generated = 1
-        self.batch_size_generated = self.num_chains
-        self.num_frames_generated = self.truncated_backprop_length
-
-        self.truncated_batch_z_placeholder_testing = tf.placeholder(
-            shape=[None, self.num_frames_generated, self.z_size],
-            dtype=tf.float32, name='z_testing')
-
-        self.batch_state_initial_placeholder = tf.placeholder(shape=[None, self.state_size], dtype=tf.float32,
-                                                              name='state_initial')
-        self.batch_content_placeholder = tf.placeholder(shape=[None, self.content_size], dtype=tf.float32,
-                                                        name='content')
-        self.batch_motion_type_placeholder = tf.placeholder(shape=[None, self.motion_type_size], dtype=tf.float32,
-                                                            name='motion_type')
-
-        images_syn , next_state, all_states = self.dyn_generator(self.truncated_batch_z_placeholder_testing,
-                                                    self.batch_state_initial_placeholder, self.batch_content_placeholder,
-                                                    self.batch_motion_type_placeholder, reuse=False)
-
-        # sample_videos = np.random.randn(self.num_batches_generated * self.batch_size_generated, self.num_frames_generated, self.image_size, self.image_size, 3)
-
-        saver = tf.train.Saver()
-        self.sess.run(tf.global_variables_initializer())
-        saver.restore(self.sess, ckpt)
-        print('Loading checkpoint {}.'.format(ckpt))
-
-        # sample_z = np.random.normal(0, 1, size=(self.sample_size_test, self.z_size * self.z_size_d * self.z_size_h * self.z_size_w)) * self.refsig
-
-        z = np.random.normal(0, 1,
-                             size=(self.batch_size_generated, self.num_frames_generated, self.z_size)) * self.refsig_gen
-
-        state_initial = np.random.normal(0, 1, size=(self.batch_size_generated, self.state_size))
-
-        content = np.random.normal(0, 1, size=(self.batch_size_generated, self.content_size))
-        motion_type = np.random.normal(0, 1, size=(self.batch_size_generated, self.motion_type_size))
-
-        recon = self.sess.run(images_syn, feed_dict={self.truncated_batch_z_placeholder_testing: z,
-                                                     self.batch_state_initial_placeholder: state_initial,
-                                                     self.batch_content_placeholder: content,
-                                                     self.batch_motion_type_placeholder: motion_type})
-
-
-        # saveSampleSequence(recon.reshape((1, recon.shape[0], self.image_size, self.image_size, 3)), self.sample_dir,  epoch, col_num=10, scale_method='tanh')
-        saveSampleSequence(recon, sample_dir_testing, col_num=10, scale_method='tanh')
-        saveSampleVideo(recon, result_dir_testing, scale_method='tanh')
