@@ -34,4 +34,4 @@ This repository contains a tensorflow implementation for spatial-temporal CoopNe
        year = {2018}
     }
 
-For any questions, please contact Jianwen Xie (jianwen@ucla.edu).
+For any questions, please contact Jianwen Xie (jianwen@ucla.edu) and Zilong Zheng (zilongzheng0318@ucla.edu).
