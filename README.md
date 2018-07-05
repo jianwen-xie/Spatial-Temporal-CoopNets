@@ -48,5 +48,13 @@ The first video is observed, and the rest two are synthesized by the learned mod
        booktitle = {The 32nd AAAI Conference on Artitifical Intelligence},
        year = {2018}
     }
+    
+    @inproceedings{stgconvnet,
+       author = {Xie, Jianwen and Zhu, Song-Chun and Wu, Ying Nian},
+       title = {Synthesizing Dynamic Patterns by Spatial-Temporal Generative ConvNet},
+       booktitle = {The IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
+       month = {July},
+       year = {2017}
+    } 
 
 For any questions, please contact Jianwen Xie (jianwen@ucla.edu) and Zilong Zheng (zilongzheng0318@ucla.edu).
