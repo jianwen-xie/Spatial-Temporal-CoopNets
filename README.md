@@ -5,9 +5,13 @@ This repository contains a tensorflow implementation for ***spatial-temporal*** 
 ## Requirements
 - Python 2.7 or Python 3.3+
 - [Tensorflow r1.3+](https://www.tensorflow.org/install/)
+- Install [FFmpeg](https://www.ffmpeg.org/download.html)
+    ```bash
+    sudo sh ffmpeg_installer.sh
+    ```
 - Install required Python libraries
     ```bash
-    pip install numpy scipy
+    pip install -r requirements.txt
     ```
 
 ## How to run
@@ -23,7 +27,10 @@ This repository contains a tensorflow implementation for ***spatial-temporal*** 
    ```
 - To train a model with ***fire_pot*** video:
     ```bash
-    $ python train_coop_video.py --category fire_pot --data_path ./trainingVideo --output_dir ./output_coop_video --num_epochs 1000 --num_chains 2
+    $ python train_coop_video.py --category fire_pot \
+                                 --num_epochs 1000 --num_chains 2 \
+                                 --data_path ./trainingVideo \
+                                 --output_dir ./output_coop_video
     ```
 - Synthesized results will be saved in
     ```bash
