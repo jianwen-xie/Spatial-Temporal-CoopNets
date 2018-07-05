@@ -25,7 +25,7 @@ This repository contains a tensorflow implementation for ***spatial-temporal*** 
    ```bash
    ./trainingVideo/fire_pot/fire_pot.avi
    ```
-- To train a model with ***fire_pot*** video:
+- To train a model with ***fire_pot.avi*** video:
     ```bash
     $ python train_coop_video.py --category fire_pot \
                                  --num_epochs 1000 --num_chains 2 \
@@ -36,7 +36,11 @@ This repository contains a tensorflow implementation for ***spatial-temporal*** 
     ```bash
     ./output_coop_video/fire_pot
     ```
-    
+## Results
+<p align="center"><img src="http://www.stat.ucla.edu/~jxie/3DDescriptorNet/files/3D_sr.png" width="400px"/></p>
+
+The first video is observed, and the rest two are synthesized by the learned model.
+
 ## References
     @inproceedings{coopnets,
        author = {Xie, Jianwen and Lu, Yang and Gao, Ruiqi and Wu, Ying Nian},
