@@ -145,7 +145,7 @@ def saveSampleVideo(samples, out_dir, original=None, global_step=None, ffmpeg_lo
             [num_video_ori, _, _, _, _] = original.shape
             combined_img = np.concatenate((original, samples), axis=0)
             #saved_img = img2cell(combined_img[:, ifr, :, :, :], col_num=num_video_ori, margin=10, scale_method=scale_method)
-            saved_img = img2cell(combined_img[:, ifr, :, :, :], col_num=5, margin=10, scale_method=scale_method)
+            saved_img = img2cell(combined_img[:, ifr, :, :, :], col_num=3, margin=10, scale_method=scale_method)
         scipy.misc.imsave("%s/%03d.png" % (result_dir, ifr), np.squeeze(saved_img))
     subprocess.call('ffmpeg -loglevel {} -r {} -i {}/%03d.png -vcodec mpeg4 -y {}/sample.avi'.format(
         ffmpeg_loglevel, fps, result_dir, result_dir), shell=True)
