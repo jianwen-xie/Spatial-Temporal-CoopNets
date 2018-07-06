@@ -41,7 +41,7 @@ This repository contains a tensorflow implementation for ***spatial-temporal*** 
     <img src="https://github.com/jianwen-xie/Spatial-Temporal-CoopNets/blob/master/demo/fire_pot.gif" width="350px"/>
     <img src="https://github.com/jianwen-xie/Spatial-Temporal-CoopNets/blob/master/demo/waterfall.gif" width="350px"/></p>
 
-The first video is observed, and the rest two are synthesized by the learned model.
+For each example, the first video is observed, and the rest two are synthesized by the learned model.
 
 ## References
     @inproceedings{coopnets,
