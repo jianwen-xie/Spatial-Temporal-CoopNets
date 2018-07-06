@@ -37,7 +37,9 @@ This repository contains a tensorflow implementation for ***spatial-temporal*** 
     ./output_coop_video/fire_pot
     ```
 ## Results
-<p align="center"><img src="https://github.com/jianwen-xie/Spatial-Temporal-CoopNets/blob/master/demo/fire_pot.gif" width="400px"/></p>
+<p align="center">
+    <img src="https://github.com/jianwen-xie/Spatial-Temporal-CoopNets/blob/master/demo/fire_pot.gif" width="350px"/>
+    <img src="https://github.com/jianwen-xie/Spatial-Temporal-CoopNets/blob/master/demo/waterfall.gif" width="350px"/></p>
 
 The first video is observed, and the rest two are synthesized by the learned model.
 
