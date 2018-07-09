@@ -1,6 +1,9 @@
 # Spatial-Temporal CoopNets
 
 This repository contains a tensorflow implementation for ***spatial-temporal*** CoopNets
+<p align="center">
+    <img src="https://github.com/jianwen-xie/Spatial-Temporal-CoopNets/blob/master/demo/fire_pot.gif" width="350px"/>
+    <img src="https://github.com/jianwen-xie/Spatial-Temporal-CoopNets/blob/master/demo/waterfall.gif" width="350px"/></p>
 
 ## Requirements
 - Python 2.7 or Python 3.3+
@@ -36,13 +39,6 @@ This repository contains a tensorflow implementation for ***spatial-temporal*** 
     ```bash
     ./output_coop_video/fire_pot
     ```
-## Results
-<p align="center">
-    <img src="https://github.com/jianwen-xie/Spatial-Temporal-CoopNets/blob/master/demo/fire_pot.gif" width="350px"/>
-    <img src="https://github.com/jianwen-xie/Spatial-Temporal-CoopNets/blob/master/demo/waterfall.gif" width="350px"/></p>
-
-For each example, the first video is observed, and the rest two are synthesized by the learned model.
-
 ## References
     @inproceedings{coopnets,
        author = {Xie, Jianwen and Lu, Yang and Gao, Ruiqi and Wu, Ying Nian},
