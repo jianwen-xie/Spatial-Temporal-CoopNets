@@ -1,6 +1,18 @@
 # Spatial-Temporal CoopNets
 
-This repository contains a tensorflow implementation for ***spatial-temporal*** CoopNets
+This repository contains a tensorflow implementation for ***spatial-temporal*** CoopNets, which is from Experiment 7 in the paper
+"[Cooperative Training of Descriptor and Generator Networks](http://www.stat.ucla.edu/~jxie/CoopNets/CoopNets_files/doc/CoopNets_PAMI.pdf)"
+
+## Reference
+    @article{coopnets,
+        author = {Xie, Jianwen and Lu, Yang and Gao, Ruiqi and Zhu, Song-Chun and Wu, Ying Nian},
+        title = {Cooperative Training of Descriptor and Generator Networks},
+        journal={IEEE transactions on pattern analysis and machine intelligence (PAMI)},
+        year = {2018},
+        publisher={IEEE}
+    }
+
+
 <p align="center">
     <img src="https://github.com/jianwen-xie/Spatial-Temporal-CoopNets/blob/master/demo/fire_pot.gif" width="350px"/>
     <img src="https://github.com/jianwen-xie/Spatial-Temporal-CoopNets/blob/master/demo/waterfall.gif" width="350px"/>
@@ -41,7 +53,7 @@ This repository contains a tensorflow implementation for ***spatial-temporal*** 
     ```bash
     ./output_coop_video/fire_pot
     ```
-## References
+## Other related references
     @inproceedings{coopnets,
        author = {Xie, Jianwen and Lu, Yang and Gao, Ruiqi and Wu, Ying Nian},
        title = {Cooperative Learning of Energy-Based Model and Latent Variable Model via MCMC Teaching},
